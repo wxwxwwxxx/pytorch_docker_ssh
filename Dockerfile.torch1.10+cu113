@@ -1,0 +1,10 @@
+FROM nvcr.io/nvidia/cuda:11.3.0-cudnn8-devel-ubuntu20.04
+ENV DEBIAN_FRONTEND noninteractive
+RUN ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN apt update && apt install -y ssh python-dev-is-python3 python3-pip
+RUN pip install torch==1.10.2+cu113 torchvision==0.11.3+cu113 torchaudio==0.10.2+cu113 -f https://download.pytorch.org/whl/cu113/torch_stable.html
+RUN pip install torch-scatter torch-sparse torch-cluster torch-spline-conv torch-geometric -f https://data.pyg.org/whl/torch-1.10.0+cu113.html
+RUN echo "root:123456"|chpasswd
+RUN mkdir -vp /run/sshd
+COPY sshd_config /etc/ssh/
+COPY .bashrc.torch1.10+cu113 /root/.bashrc
