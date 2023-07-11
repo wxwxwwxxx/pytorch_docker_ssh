@@ -1,0 +1,10 @@
+FROM nvcr.io/nvidia/pytorch:23.05-py3
+#ENV DEBIAN_FRONTEND noninteractive
+#RUN ln -fs /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN apt update && apt install -y ssh
+RUN echo "root:123456"|chpasswd
+RUN mkdir -vp /run/sshd
+RUN sed -i '$a PermitRootLogin yes' /etc/ssh/sshd_config
+RUN export -p >/root/env_var.sh
+RUN sed -i '$a source /root/env_var.sh' /root/.bashrc
+ENTRYPOINT ["/usr/sbin/sshd","-D"]

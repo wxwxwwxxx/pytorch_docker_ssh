@@ -1,0 +1,1 @@
+nvidia-docker run -d --restart=always --ipc=host -p 32444:22 -p 32006:6006 -v/home/cong/Project/verse/dataset/dataset_for_train:/dataset -v/home/cong/Project/verse/ckpt:/ckpt nvcr.io/pk5kniu2qvxx/training/pytorch_with_ssh:1.10-cu113 /usr/sbin/sshd -D
