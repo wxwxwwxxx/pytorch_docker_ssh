@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: verse-train
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: res
+  template:
+    metadata:
+      labels:
+        app: res
+    spec:
+      hostIPC: true
+      containers:
+      - name: verse
+        #image: wxwxwwxxx/pytorch_with_ssh:21.12-py3
+        image: wxwxwwxxx/pytorch_with_ssh:1.10-cu113
+        command: ["/usr/sbin/sshd"]
+        args: ["-D"]
+        volumeMounts:
+        - name: dataset
+          mountPath: /dataset
+          readOnly: true
+        - name: ckpt
+          mountPath: /ckpt
+        ports:
+        - name: ssh
+          containerPort: 22
+        - name: tensorboard
+          containerPort: 6006
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: dataset
+        hostPath:
+          path: /home/cong/Project/verse/dataset/dataset_for_train
+      - name: ckpt
+        hostPath:
+          path: /home/cong/Project/verse/ckpt
+
+
+#docker run -it --rm --ipc=host -p6444:22 -v /var/run/docker.sock:/var/run/docker.sock  -v /bin/docker:/bin/docker -v /home/cong/.docker/:/root/.docker wxwxwwxxx/pytorch_with_ssh:21.11-py3
