@@ -17,6 +17,8 @@ This repository provides some simple Dockerfiles to help you enable SSH services
 
 2. After building, run  `docker run --name={container name} -d --restart=unless-stopped -p {ssh_port}:22 --ipc=host pytorch_with_ssh:2.1-cu122`, and use a SSH terminal to connect `host_ip:{ssh_port}` with username `root` and password `123456`. You can add `-v` to mount directories or files to the docker, or add `-p` to open more desired ports.
 
+3. When first connecting to the container,  run `/opt/nvidia/nvidia_entrypoint.sh`  to read the license information and run the self-check offered by NVIDIA. Follow the instructions if any warnings are given during self-check. Note for early images, the script's path may differ. In that case, read the `ENTRYPOINT` in the Dockerfile (Layers) on its [release page](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch) to get the script's path.
+
 ## Safety Reminder
 
 These dockerfiles are designed to **personal use** within **safe local network**. If it's not your case, please **do not** use these docker images unless you know exactly what you are doing.
